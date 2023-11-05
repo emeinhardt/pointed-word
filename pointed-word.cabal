@@ -1,0 +1,39 @@
+cabal-version:        3.0
+name:                 pointed-word
+version:              0.1.0.0
+synopsis:
+  A package for modeling /pointed words/: sequences with 0 or more distinguished individual elements.
+license:              MIT
+license-file:         LICENSE
+author:               Eric Meinhardt
+maintainer:           ericmeinhardt@gmail.com
+copyright:            2023
+category:             Data
+build-type:           Simple
+extra-doc-files:      CHANGELOG.md
+
+common warnings
+  ghc-options:  -Wall -Wdefault -Wno-orphans -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat
+
+library
+  import:             warnings
+  hs-source-dirs:     src
+  default-language:   GHC2021
+  default-extensions:
+    UnicodeSyntax
+  other-extensions:
+    OverloadedLists
+    DerivingStrategies
+    DeriveAnyClass
+  exposed-modules:
+    PointedWord
+    PointedWord.Eps
+    PointedWord.Core
+  build-depends:
+      base ^>=4.17.1.0
+    , deepseq                     ==1.4.*
+    , base-unicode-symbols        ==0.2.*
+    , composition                 ==1.0.*
+    , newtype-generics            ==0.6.*
+    , containers                  ==0.6.*
+    , nonempty-containers         ==0.3.*

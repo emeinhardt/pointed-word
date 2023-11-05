@@ -8,9 +8,15 @@ license-file:         LICENSE
 author:               Eric Meinhardt
 maintainer:           ericmeinhardt@gmail.com
 copyright:            2023
+homepage:             https://github.com/emeinhardt/pointed-word
+bug-reports:          https://github.com/emeinhardt/pointed-word/issues
 category:             Data
 build-type:           Simple
 extra-doc-files:      CHANGELOG.md
+
+source-repository head
+  type:     git
+  location: https://github.com/emeinhardt/pointed-word/pointed-word.git
 
 common warnings
   ghc-options:  -Wall -Wdefault -Wno-orphans -Wredundant-constraints -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat
@@ -30,10 +36,10 @@ library
     PointedWord.Eps
     PointedWord.Core
   build-depends:
-      base ^>=4.17.1.0
-    , deepseq                     ==1.4.*
-    , base-unicode-symbols        ==0.2.*
-    , composition                 ==1.0.*
-    , newtype-generics            ==0.6.*
-    , containers                  ==0.6.*
-    , nonempty-containers         ==0.3.*
+      base                    >= 4.16 && < 5.0
+    , deepseq                 >= 1.4  && < 2.0
+    , base-unicode-symbols    >= 0.2
+    , composition             >= 1.0  && < 1.1
+    , newtype-generics        >= 0.6  && < 0.7
+    , containers              >= 0.6  && < 0.7
+    , nonempty-containers     >= 0.3  && < 0.4

@@ -73,11 +73,15 @@ location where *l* and *r* differ:
 
 Equivalent, but aligned for easier spotting of differences:
 
->     a x ba y a z ab
->   Δ a t ba u a v ab
-> ≡ ( a>x<ba>y<a>z<ab
->   , a>t<ba>u<a>v<ab
->   )
+```haskell
+     a x ba y a z ab
+   Δ a t ba u a v ab
+ ≡ ( a>x<ba>y<a>z<ab
+   , a>t<ba>u<a>v<ab
+   )
+```
+
+
 
 
 

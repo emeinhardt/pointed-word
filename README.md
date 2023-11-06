@@ -87,9 +87,9 @@ Equivalent, but aligned for easier spotting of differences:
 
 ## Why might I want to think about pointed words?
 
- - Modeling diffs of same-length sequences — or patches between them.
- - Reasoning about cokleisli arrows in list-zipper-like comonads.
  - Modeling particular classes of state machines ("lookaround machines") over sequences.
+ - Reasoning about compositions of cokleisli arrows in list-zipper-like comonads.
+ - Modeling diffs of same-length sequences — or patches between them.
 
 These are roughly the reasons I wrote the package — reasoning about a particular finite-state model of string
 transformations called *bimachines*.

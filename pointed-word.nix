@@ -10,6 +10,6 @@ mkDerivation {
     newtype-generics nonempty-containers
   ];
   homepage = "https://github.com/emeinhardt/pointed-word";
-  description = "A package for modeling /pointed words/: sequences with 0 or more distinguished individual elements";
+  description = "A package for modeling pointed words: sequences with ≥ 0 focused elements";
   license = lib.licenses.mit;
 }

@@ -2,7 +2,52 @@ cabal-version:        3.0
 name:                 pointed-word
 version:              0.1.0.0
 synopsis:
-  A package for modeling /pointed words/: sequences with 0 or more distinguished individual elements.
+  A package for modeling pointed words: sequences with ≥ 0 focused elements.
+description:
+  This package models the domain of /(multi)pointed words/ and mild generalizations, motivated by their uses in the formal language and automata theory:
+
+   - Modeling particular classes of state machines ("bimachines", "lookaround machines") over sequences.
+   - Reasoning about compositions of cokleisli arrows in list-zipper-like comonads.
+   - Modeling diffs of same-length sequences — or patches between them.
+
+  = What's a __pointed word__?
+
+  A /pointed word/ over /a/ consists of a sequence of points, with a (possibly empty) context on either side of the points:
+
+   - /abba\>x\<aaa\>y\</ is a (multi)pointed word with /abba/ and /aaa/ as contexts, and /x/ and /y/ as points.
+   - /\>x\<ay/ is a (singly-)pointed word with /ay/ as its only context, and /x/ as its only pointed symbol.
+   - /\>x\<\>y\</ is a pointed word with no contexts, and /x/ and /y/ as points.
+   - /xy/ is an unpointed word with /xy/ as its only context.
+
+  Points can be /introduced/ or /projected off/:
+
+  - /point 1 axb = a\>x\<b/
+  - /unpoint 1 a\>x\<b = axb/
+
+  Pointed words can be /concatenated/:
+
+   - /a\>x\<b ⋅ \>y\<a = a\>x\<b\>y\<a/
+
+  The set of all pointed words whose unpointed word /w/ of length /n/ is the same — e.g. /xyz/ form a finite Boolean (powerset) lattice:
+
+   - The /bottom element/ is the unpointed word /w/ — /xyz/.
+   - The /top element/ is the multipointed form of /w/ with /n/ points — /\>x\<\>y\<\>z\</.
+   - The /meet/ of two pointed forms /l ∧ r/ of /w/ is the pointed word with the set of points common to both /l/ and /r/ — /\>x\<yz ∧ xy\>z\< = xyz/.
+   - The /join/ of two pointed forms /l ∨ r/ of /w/ is the pointed word with the set of points present in at least one of /l/ and /r/ — /\>x\<yz ∨ xy\>z\< = \>x\<y\>z\</.
+
+  Two pointed words of the same length can be conveniently compared for substitution differences:
+
+  >     a x ba y a z ab
+  >   Δ a t ba u a v ab
+  > ≡ ( a>x<ba>y<a>z<ab
+  >   , a>t<ba>u<a>v<ab
+  >   )
+
+  That's the basic idea.
+
+  As described in more detail in the main module of the package, we can also generalize the notion of pointed word and context here to replace a context of actual symbols with some other type that represents a summary of that context — a state or run of states produced by an automaton.
+
+
 license:              MIT
 license-file:         LICENSE
 author:               Eric Meinhardt
@@ -44,7 +89,7 @@ library
   build-depends:
       base                    >= 4.16 && < 5.0
     , deepseq                 >= 1.4  && < 2.0
-    , base-unicode-symbols    >= 0.2
+    , base-unicode-symbols    >= 0.2  && < 1.0
     , composition             >= 1.0  && < 1.1
     , newtype-generics        >= 0.6  && < 0.7
     , containers              >= 0.6  && < 0.7

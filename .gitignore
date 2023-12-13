@@ -13,4 +13,4 @@ dist-newstyle/*
 *.dyn_hi
 cabal.project.local
 cabal.project.local~
-
+TAGS

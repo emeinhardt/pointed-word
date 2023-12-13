@@ -33,10 +33,15 @@
             cabal-install
 
             haskellPackages.haskell-language-server
-
             haskellPackages.hlint
+
+            haskellPackages.hasktags
+            haskellPackages.haskdogs
+
             haskellPackages.stylish-haskell
             haskellPackages.hindent
+
+            ghcid
 
             # Optional: Only needed to make use of ./justfile
             just

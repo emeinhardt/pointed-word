@@ -12,7 +12,7 @@ description:
 
   = What's a __pointed word__?
 
-  A /pointed word/ over /a/ consists of a sequence of points, with a (possibly empty) context on either side of the points:
+  A /pointed word/ over /a/ consists of a sequence of points, with a (possibly empty) context on either side of the points. For the sake of documentation, /\>/ and /\</ are metalinguistic symbols that surround (point at) a pointed symbol. Examples:
 
    - /abba\>x\<aaa\>y\</ is a (multi)pointed word with /abba/ and /aaa/ as contexts, and /x/ and /y/ as points.
    - /\>x\<ay/ is a (singly-)pointed word with /ay/ as its only context, and /x/ as its only pointed symbol.

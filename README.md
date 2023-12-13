@@ -10,13 +10,16 @@ In a nutshell, a pointed word is a sequence ("string") over some type *a* consis
  - 0 or more background sequences of context, subject to the restriction that there are no consecutive pairs
    of contexts.
    
-An **unpointed word** is a pointed word that has no points, and consists only of a single (possibly empty)
-context.
+An **unpointed word** is a pointed word with no points, and consists only of a single (possibly empty)
+context: *abbaxaaa* is an example of an unpointed word.
 
 We can transform an unpointed word *w*, *|w| = n* into a **singly-pointed word** by specifying an index
 *0 ≤ i ≤ n -1* to become a point:
 
  - *point 4 abbaxaaa = abba>x<aaa*
+
+(For the purpose of documentation, the metalinguistic symbols *>* and *<* surround a symbol if it is 
+"pointed".)
  
 A **singly-pointed word** over *a* is a sequence of:
 
@@ -25,7 +28,7 @@ A **singly-pointed word** over *a* is a sequence of:
  - A possibly empty final context.
 
 For example, *abba>x<aaa* is a pointed word with *abba* as preceding context, *aaa* as following context, and
-*x* as the point or point(ed) symbol. (The metalinguistic symbols *>* and *<* surround a point.)
+*x* as the point or point(ed) symbol. 
 
 
 A **multipointed word** over *a* consists of a sequence of points, with a (possibly empty) context on either
@@ -61,7 +64,7 @@ Given two pointed words whose unpointed words are the same, we can also take the
  - *abba>x<aaay ∨ abbaxaaa>y< = abba>x<aaa>y<*
  - *abba>x<aaa>y< ∧ abba>x<aaay = abba>x<aaay*
 
-For a word *w*, *|w| = n*, there *2ⁿ* pointed words, with a bottom element consisting of the unpointed word,
+For a word *w*, *|w| = n*, there are *2ⁿ* pointed words, with a bottom element consisting of the unpointed word,
 and a top element consisting of the word where every symbol is pointed: the set of all pointed versions of a
 particular unpointed word *w* form a finite Boolean (powerset) lattice.
 

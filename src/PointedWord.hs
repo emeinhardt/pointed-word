@@ -60,7 +60,7 @@ Given two pointed words whose unpointed words are the same, we can also take the
  - /abba\>x\<aaay ∨ abbaxaaa\>y\< = abba\>x\<aaa\>y\</
  - /abba\>x\<aaa\>y\< ∧ abba\>x\<aaay = abba\>x\<aaay/
 
-For a word /w/, /|w| = n/, there /2ⁿ/ pointed words, with a bottom element consisting of the unpointed word,
+For a word /w/, /|w| = n/, there are /2ⁿ/ pointed words, with a bottom element consisting of the unpointed word,
 and a top element consisting of the word where every symbol is pointed: the set of all pointed versions of a
 particular unpointed word /w/ form a finite Boolean (powerset) lattice.
 
@@ -93,6 +93,9 @@ transformations called /bimachines/.
 
 === Pointed words and automata theory
 
+**Note:** This subsection assumes you are already familiar with finite-state automata and basic finite-state
+transducers ("[one-way] automata with output").
+
 A /bimachine/ is defined by two contradirectional deterministic (semi)automata and an output function /ω/:
 
  - /(Aₗ, Aᵣ, ω : Qₗ → Qᵣ → Σ → Γ*)/
@@ -101,40 +104,41 @@ A /bimachine/ is defined by two contradirectional deterministic (semi)automata a
 
 One automaton reads an input word from left-to-right, the other reads from right-to-left, and /ω/ maps each
 input symbol to an output string. (Note that this only defines a function on non-empty input strings; it is
-common to stipulate that an empty string in the input alphabet is mapped to the empty string in the output
-alphabet.) Modulo the minor wrinkle of deciding how to handle empty input strings, bimachines can represent
+common to stipulate that an empty string in the input alphabet /Σ/ is mapped to the empty string in the output
+alphabet /Γ/.) Modulo the minor wrinkle of deciding how to handle empty input strings, bimachines can represent
 any functional rational string transduction — any rational transduction that maps an input string to a unique
 output string; they are equivalent in expressivity to one-way (incrementally) non-deterministic finite-state
 transducers.
 
-Note that a bimachine represents a string function /φ/ characterized by a "local" transformation that has
-(limited) bidirectional access to the surrounding context, and this associates every string in /φ/'s domain
-of definition with a set of singly-pointed words
+As you can see from the type signature of /ω : Qₗ → Qᵣ → Σ → Γ*/, a bimachine represents a string function
+/φ/ characterized by a "local" transformation that has (limited) bidirectional access to the surrounding
+context, and this associates every string in /φ/'s domain of definition with a set of singly-pointed words
 
  - /a₁ ⋅ a₂ ⋅ a₃ ⋅ ... \>aᵢ\< ⋅ ... ⋅ aₙ/
 
-where /aᵢ/ is a focused symbol and the symbols to each side represent the context that each automaton summarizes.
+where /aᵢ/ is a "focused" symbol (in the sense of a zipper comonad) and the symbols to each side represent
+the context that each automaton summarizes or classifies into one of a finite number of categories
+(i.e. states).
 
-If this the end of the story and the main or only structure of interest, a list zipper comonad or some
+If this were the end of the story and the main or only structure of interest, a list zipper comonad or some
 variation on them would be appropriate.
 
 However, if we want to explicitly represent the automaton-summarized view of these pointed words that /ω/ acts
-on, we instead have a variation on the basic presentation of pointed words used so far — a set of singly-pointed
-words where the focus and contexts are over different alphabets:
+on, we instead have a variation on the basic presentation of pointed words used so far: we have a set of
+singly-pointed words where the focus and contexts are over different alphabets:
 
 \[
 (l_{i-1}, r_{i+1}) ⋅ a_i ⋅ (l_{i+1}, r_{i-1})
 \]
 
 
-where \(l_j\) is a left-to-right state, \(r_j\) is a right-to-left state, and
+where \(l_j : Qₗ\) is a left-to-right state, \(r_j : Qᵣ\) is a right-to-left state, and
 for \(q ∈ \{l, r\}\), \( q_{i-1} \) and \( q_{i+1} \) are the states occurring __before__ and __after__
 (respectively) the /i/th symbol has been read.
 
 In both cases, note that we can also associate each input string with a (maximally pointed) multipointed string
-of essentially the same character. One of the main motivations for this package is a slightly less dense
-multipointed string for the special case of bimachines whose output function is of type /ω : Qₗ → Qᵣ → Σ → Γ/
-for /Σ ⊆ Γ/.
+of essentially the same character. One of the main motivations for this package is a less dense multipointed
+string for the special case of bimachines whose output function is of type /ω : Qₗ → Qᵣ → Σ → Γ/ for /Σ ⊆ Γ/.
 
 For these kinds of bimachines, any given input string can be associated with a multipointed string where the
 pointed symbols are just those input symbols that /ω/ changes. The set of such multipointed strings are a
@@ -147,9 +151,13 @@ such machines. (Also again, this is not something a list zipper comonad models.)
 == This module
 
 There are a two variations of pointed words in this package to support different use cases with respect to
-basic pointed words.
+basic pointed words, parameterized by their tolerance for where and when the empty string can occur:
 
-The default one exposed here is the simpler one:
+ - "PointedWord" can represent the empty string and epsilon-free non-empty strings.
+ - "PointedWord.Eps" can represent the empty string and non-empty strings where epsilon is permitted
+   internally.
+
+The first variation — exposed here — is the simpler one:
 
 > newtype GPW b a = GPW { unGPW ∷ Seq (GPwNode b a) }
 > data GPwNode b a = Context b | Point a
@@ -162,17 +170,20 @@ The default one exposed here is the simpler one:
 The invariant a 'GPW' value is expected to have is that there will never be a consecutive sequence of two
 'Context' nodes.
 
-Finally, note that
+Note that
 
- - A pointed word ('PW a') that is the empty string has one representation: a 'GPW' with an empty 'Seq'.
- - There is no ability to represent empty strings anywhere in the interior of a pointed word.
+ - A pointed word (@PW a@) that is the empty string has one representation: a 'GPW' with an empty 'Seq':
+   @lift "" = GPW Seq.empty@.
+ - There is no ability to represent empty strings anywhere in the interior of a pointed word: the only
+   representable pointed word in this module containing the empty string is the pointed word
+   consisting of the empty string itself and no other symbols: @lift "" = GPW Seq.empty@.
 
 This second quality makes it simpler and less expressive than the other implementation in "PointedWord.Eps",
 where pointed words are essentially an 'NESeq' of 'PwNode's, and @type PW a = GPW (__Seq__ a) a@: hence,
 in that module,
 
- - A pointed word that is the empty string has one representation: a 'GPW' with a 'Context' that is an empty
- 'Seq'.
+ - A pointed word ('PW') that is the empty string has one representation: a 'GPW' with a 'Context' that is an
+   empty 'Seq': @lift "" = GPW $ NESeq.singleton $ Context $ Seq.empty@.
  - A 'Context' with an empty 'Seq' can appear anywhere within a word, representing an empty string somewhere
  in the word's interior.
 
